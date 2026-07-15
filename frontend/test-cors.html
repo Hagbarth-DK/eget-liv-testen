@@ -1,0 +1,24 @@
+<!--
+  Bundniveau-Testen — CORS/embed-testblok
+  Indsæt denne i Lumants HTML-element FØR resten af testen bygges ind.
+  Erstat [NETLIFY-FUNCTION-URL] med din faktiske Netlify-site-URL,
+  fx https://mit-site-123.netlify.app
+-->
+<div style="font-family: sans-serif; padding: 16px; border: 1px solid #ddd; border-radius: 8px; max-width: 480px;">
+  <p style="margin: 0 0 12px;">Bundniveau-Testen — forbindelsestest</p>
+  <button id="test-btn" style="padding: 10px 16px; cursor: pointer;">Test forbindelse</button>
+  <p id="test-result" style="margin-top: 12px; font-family: monospace; white-space: pre-wrap;"></p>
+</div>
+<script>
+document.getElementById('test-btn').onclick = async () => {
+  const resultEl = document.getElementById('test-result');
+  resultEl.innerText = 'Tester...';
+  try {
+    const res = await fetch('https://[NETLIFY-FUNCTION-URL]/.netlify/functions/ping');
+    const data = await res.json();
+    resultEl.innerText = 'Success: ' + JSON.stringify(data);
+  } catch (e) {
+    resultEl.innerText = 'FEJL: ' + e.message;
+  }
+};
+</script>
