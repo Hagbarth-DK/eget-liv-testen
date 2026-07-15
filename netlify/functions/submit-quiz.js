@@ -1,12 +1,12 @@
 const { corsHeaders, preflightResponse } = require("../../lib/cors");
-const { CATEGORIES } = require("../../lib/content");
+const { CATEGORY_CONTENT } = require("../../lib/categoryContent");
 const { generateReportPdf } = require("../../lib/pdf");
 const { sendReportEmail, upsertContact } = require("../../lib/brevo");
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const VALID_CATEGORIES = Object.keys(CATEGORIES); // ["TOP", "SPR", "UDS"]
+const VALID_CATEGORIES = Object.keys(CATEGORY_CONTENT); // ["TOP", "SPR", "UDS"]
 
-const BOOKING_URL = process.env.BOOKING_URL || "https://hagbarthandersen.com/book";
+const BOOKING_URL = process.env.BOOKING_URL || "https://calendly.com/hagbarth-nmvh/30min";
 const SENDER_NAME = "Hagbarth Skjold Andersen";
 const SENDER_CONTACT = process.env.BREVO_SENDER_EMAIL || "";
 
@@ -54,15 +54,16 @@ exports.handler = async (event) => {
   const { name, email, category, scores } = body;
 
   try {
-    const pdfBuffer = await generateReportPdf({
+    const { buffer: pdfBuffer, filename, title } = await generateReportPdf({
       name: name.trim(),
       category,
+      scores,
       bookingUrl: BOOKING_URL,
       senderName: SENDER_NAME,
       senderContact: SENDER_CONTACT,
     });
 
-    await sendReportEmail({ toEmail: email, toName: name.trim(), pdfBuffer });
+    await sendReportEmail({ toEmail: email, toName: name.trim(), pdfBuffer, filename, subject: title });
     await upsertContact({ email, name: name.trim(), category, scores });
 
     return jsonResponse(200, { success: true });
