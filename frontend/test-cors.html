@@ -14,7 +14,7 @@ document.getElementById('test-btn').onclick = async () => {
   const resultEl = document.getElementById('test-result');
   resultEl.innerText = 'Tester...';
   try {
-    const res = await fetch('https://[NETLIFY-FUNCTION-URL]/.netlify/functions/ping');
+    const res = await fetch('https://bejewelled-dragon-5e69df.netlify.app/.netlify/functions/ping');
     const data = await res.json();
     resultEl.innerText = 'Success: ' + JSON.stringify(data);
   } catch (e) {

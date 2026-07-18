@@ -39,7 +39,15 @@
       <p class="bnt-eyebrow">Dit resultat</p>
       <h2 class="bnt-heading" id="bnt-teaser-title"></h2>
       <p class="bnt-text" id="bnt-teaser-text"></p>
-      <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-reveal-btn">Se min fulde rapport</button>
+      <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-open-question-btn">Fortsæt</button>
+    </section>
+
+    <!-- OPEN QUESTION STATE (ikke-scoret, valgfri) -->
+    <section id="bnt-state-open" class="bnt-state" hidden>
+      <h3 class="bnt-question">Hvad er den ene ting, du blev ved med at udskyde i denne uge?</h3>
+      <p class="bnt-text" style="margin-bottom: 12px;">Valgfrit — men jo mere præcis, jo bedre kan rapporten ramme dig.</p>
+      <textarea class="bnt-input bnt-textarea" id="bnt-open-answer" rows="3"></textarea>
+      <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-reveal-btn" style="margin-top: 16px;">Se min fulde rapport</button>
     </section>
 
     <!-- EMAIL GATE STATE -->
@@ -58,7 +66,7 @@
         <span>
           Ja tak, send mig min personlige rapport og lejlighedsvise mails med relevant indhold.
           Jeg kan til enhver tid afmelde mig. Læs vores
-          <a href="PRIVACY_POLICY_URL" target="_blank" rel="noopener">privatlivspolitik</a>.
+          <a href="https://hagbarth-skjold-andersen.lumant.nu/privatlivs-og-cookiepolitik" target="_blank" rel="noopener">privatlivspolitik</a>.
         </span>
       </label>
 
@@ -132,6 +140,7 @@
     padding: 11px 12px; font-size: 15px; box-sizing: border-box;
   }
   .bnt-input:focus { outline: none; border-color: #a34a3c; }
+  .bnt-textarea { resize: vertical; font-family: inherit; }
 
   .bnt-checkbox-row {
     display: flex; gap: 10px; align-items: flex-start;
@@ -148,23 +157,28 @@
 
 <script>
 (function () {
-  var SUBMIT_URL = "https://[NETLIFY-FUNCTION-URL]/.netlify/functions/submit-quiz";
+  var SUBMIT_URL = "https://bejewelled-dragon-5e69df.netlify.app/.netlify/functions/submit-quiz";
 
+  // Svar A-D giver point til en kategori; svar E ("Ved ikke / andet") giver 0 point.
   var QUESTIONS = [
     {
       text: "Hvor ofte oplever du, at du ved præcis hvad du skal gøre — men gør det ikke alligevel?",
       options: [
-        { label: "Næsten hver dag", category: "UDS" },
         { label: "Kun når jeg er presset eller træt", category: "TOP" },
-        { label: "Sjældent, jeg har bare for mange bolde i luften", category: "SPR" }
+        { label: "Sjældent, jeg har bare for mange bolde i luften", category: "SPR" },
+        { label: "Næsten hver dag", category: "UDS" },
+        { label: "Det sker mest, når dagen allerede er skredet — ellers følger jeg som regel planen", category: "TOP" },
+        { label: "Ved ikke / andet", category: null }
       ]
     },
     {
       text: "Hvordan ser din liste over \"vigtige projekter\" ud lige nu?",
       options: [
-        { label: "Én ting jeg presser mig selv til at gøre perfekt", category: "TOP" },
         { label: "10-15 ting, jeg alle synes er vigtige", category: "SPR" },
-        { label: "Jeg ved godt hvad det er — jeg har bare ikke startet", category: "UDS" }
+        { label: "Jeg ved godt hvad det er — jeg har bare ikke startet", category: "UDS" },
+        { label: "Én ting jeg presser mig selv til at gøre perfekt", category: "TOP" },
+        { label: "Jeg har svært ved at sige nej til nye idéer, selv midt i noget andet", category: "SPR" },
+        { label: "Ved ikke / andet", category: null }
       ]
     },
     {
@@ -172,39 +186,49 @@
       options: [
         { label: "Jeg dropper det hele og siger \"jeg starter i morgen\"", category: "UDS" },
         { label: "Jeg presser mig selv urealistisk hårdt for stadig at nå \"det hele\"", category: "TOP" },
-        { label: "Jeg hopper mellem opgaver uden at gennemføre nogen", category: "SPR" }
+        { label: "Jeg hopper mellem opgaver uden at gennemføre nogen", category: "SPR" },
+        { label: "Jeg udsætter det svære og laver i stedet noget, der føles produktivt, men ikke er det", category: "UDS" },
+        { label: "Ved ikke / andet", category: null }
       ]
     },
     {
       text: "Hvornår sidst gennemførte du noget, du havde lovet dig selv — til tiden, uden undskyldninger?",
       options: [
-        { label: "Det er længe siden — jeg kan ikke lige huske det", category: "UDS" },
         { label: "Kun når alt var perfekt: god søvn, ingen forstyrrelser, højt humør", category: "TOP" },
-        { label: "Jeg starter tit, men skifter retning undervejs", category: "SPR" }
+        { label: "Jeg starter tit, men skifter retning undervejs", category: "SPR" },
+        { label: "Det er længe siden — jeg kan ikke lige huske det", category: "UDS" },
+        { label: "Det sker, men kun i korte, intense perioder, jeg ikke kan holde ved lige", category: "TOP" },
+        { label: "Ved ikke / andet", category: null }
       ]
     },
     {
       text: "Hvordan reagerer du, når en plan bliver forstyrret af noget uventet?",
       options: [
-        { label: "Hele dagen/ugen føles ødelagt, og jeg giver op på resten", category: "TOP" },
         { label: "Jeg finder på en ny plan/idé i stedet — og glemmer den gamle", category: "SPR" },
-        { label: "Jeg ved godt jeg burde justere og fortsætte, men gør det ikke", category: "UDS" }
+        { label: "Jeg ved godt jeg burde justere og fortsætte, men gør det ikke", category: "UDS" },
+        { label: "Hele dagen/ugen føles ødelagt, og jeg giver op på resten", category: "TOP" },
+        { label: "Jeg bruger det som en undskyldning for at starte noget helt nyt i stedet", category: "SPR" },
+        { label: "Ved ikke / andet", category: null }
       ]
     },
     {
-      text: "Hvor mange gange har du startet forfra på den samme vane/rutine i år?",
+      text: "Hvor mange gange har du startet forfra på den samme rutine i år?",
       options: [
         { label: "Utallige gange — jeg starter altid mandag", category: "UDS" },
         { label: "Jeg starter sjældent forfra, men brænder hurtigt ud, fordi jeg presser for hårdt", category: "TOP" },
-        { label: "Jeg skifter metode/system ofte, fordi jeg keder mig eller finder noget \"bedre\"", category: "SPR" }
+        { label: "Jeg skifter metode/system ofte, fordi jeg keder mig eller finder noget \"bedre\"", category: "SPR" },
+        { label: "Jeg har mistet tællingen — det føles som et permanent mønster nu", category: "UDS" },
+        { label: "Ved ikke / andet", category: null }
       ]
     },
     {
       text: "Hvad beskriver bedst din indre stemme, når du ikke får lavet det vigtige?",
       options: [
-        { label: "\"Jeg er doven / jeg kan ikke stole på mig selv\"", category: "UDS" },
         { label: "\"Det var ikke godt nok, jeg må gøre det om\"", category: "TOP" },
-        { label: "\"Jeg ved ikke engang hvad jeg skal prioritere først\"", category: "SPR" }
+        { label: "\"Jeg ved ikke engang hvad jeg skal prioritere først\"", category: "SPR" },
+        { label: "\"Jeg er doven / jeg kan ikke stole på mig selv\"", category: "UDS" },
+        { label: "\"Jeg burde have gjort det bedre, når jeg endelig gik i gang\"", category: "TOP" },
+        { label: "Ved ikke / andet", category: null }
       ]
     }
   ];
@@ -219,22 +243,25 @@
       text: "Du har 20 fokusområder og et system, der aldrig får lov at blive færdigt med bare ét."
     },
     UDS: {
-      title: "Du er: Den stille udskyder",
+      title: "Du er: Den Stille Udskyder",
       text: "Du ved præcis, hvad du skal gøre — og gør det alligevel ikke."
     }
   };
 
   var TIE_BREAK_ORDER = ["UDS", "TOP", "SPR"];
+  var SECONDARY_MIN_SCORE = 2;
 
   var scores = { TOP: 0, SPR: 0, UDS: 0 };
   var currentQuestion = 0;
   var selectedOptionIndex = null;
-  var resultCategory = null;
+  var primaryCategory = null;
+  var secondaryCategory = null;
 
   var states = {
     intro: document.getElementById("bnt-state-intro"),
     question: document.getElementById("bnt-state-question"),
     teaser: document.getElementById("bnt-state-teaser"),
+    open: document.getElementById("bnt-state-open"),
     email: document.getElementById("bnt-state-email"),
     confirm: document.getElementById("bnt-state-confirm")
   };
@@ -245,7 +272,7 @@
     });
   }
 
-  function computeResultCategory() {
+  function computePrimaryCategory() {
     var best = null;
     var bestScore = -1;
     TIE_BREAK_ORDER.forEach(function (cat) {
@@ -255,6 +282,19 @@
       }
     });
     return best;
+  }
+
+  function computeSecondaryCategory(primary) {
+    var best = null;
+    var bestScore = -1;
+    TIE_BREAK_ORDER.forEach(function (cat) {
+      if (cat === primary) return;
+      if (scores[cat] > bestScore) {
+        bestScore = scores[cat];
+        best = cat;
+      }
+    });
+    return bestScore >= SECONDARY_MIN_SCORE ? best : null;
   }
 
   function renderQuestion() {
@@ -293,15 +333,16 @@
     if (selectedOptionIndex === null) return;
     var q = QUESTIONS[currentQuestion];
     var chosenCategory = q.options[selectedOptionIndex].category;
-    scores[chosenCategory] += 1;
+    if (chosenCategory) scores[chosenCategory] += 1;
 
     if (currentQuestion < QUESTIONS.length - 1) {
       currentQuestion += 1;
       renderQuestion();
     } else {
       document.getElementById("bnt-progress-fill").style.width = "100%";
-      resultCategory = computeResultCategory();
-      var teaser = TEASERS[resultCategory];
+      primaryCategory = computePrimaryCategory();
+      secondaryCategory = computeSecondaryCategory(primaryCategory);
+      var teaser = TEASERS[primaryCategory];
       document.getElementById("bnt-teaser-title").innerText = teaser.title;
       document.getElementById("bnt-teaser-text").innerText = teaser.text;
       showState("teaser");
@@ -327,6 +368,7 @@
     var name = document.getElementById("bnt-name").value.trim();
     var email = document.getElementById("bnt-email").value.trim();
     var consent = document.getElementById("bnt-consent").checked;
+    var openAnswer = document.getElementById("bnt-open-answer").value.trim();
 
     if (!name) return showError("Udfyld venligst dit navn.");
     if (!isValidEmail(email)) return showError("Indtast venligst en gyldig e-mailadresse.");
@@ -343,8 +385,10 @@
         body: JSON.stringify({
           name: name,
           email: email,
-          category: resultCategory,
+          primaryCategory: primaryCategory,
+          secondaryCategory: secondaryCategory,
           scores: scores,
+          openAnswer: openAnswer,
           consent: true,
           consentTimestamp: new Date().toISOString()
         })
@@ -371,6 +415,9 @@
   };
 
   document.getElementById("bnt-next-btn").onclick = handleNext;
+  document.getElementById("bnt-open-question-btn").onclick = function () {
+    showState("open");
+  };
   document.getElementById("bnt-reveal-btn").onclick = function () {
     showState("email");
   };
