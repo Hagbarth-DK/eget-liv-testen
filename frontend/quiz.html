@@ -287,7 +287,7 @@
     var q = QUESTIONS[currentQuestion];
     var chosen = q.options[selectedOptionIndex];
     if (chosen.category) scores[chosen.category] += 1;
-    answerTexts[currentQuestion] = chosen.label;
+    answerTexts[currentQuestion] = { category: chosen.category, text: chosen.label };
 
     if (currentQuestion < QUESTIONS.length - 1) {
       currentQuestion += 1;
@@ -334,8 +334,7 @@
           name: name,
           email: email,
           scores: scores,
-          answerQ3: answerTexts[2] || "",
-          answerQ5: answerTexts[4] || "",
+          answers: answerTexts,
           consent: true,
           consentTimestamp: new Date().toISOString()
         })

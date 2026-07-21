@@ -1,10 +1,11 @@
 const { corsHeaders, preflightResponse } = require("../../lib/cors");
 const { generateReportPdf } = require("../../lib/pdf");
-const { computeResult } = require("../../lib/scoring");
+const { computeResult, selectQuotes } = require("../../lib/scoring");
 const { sendReportEmail, upsertContact } = require("../../lib/brevo");
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CATEGORIES = ["TOP", "SPR", "UDS"];
+const VALID_ANSWER_CATEGORIES = [...CATEGORIES, null];
 
 const BOOKING_URL = process.env.BOOKING_URL || "https://calendly.com/hagbarth-nmvh/30min";
 const SENDER_NAME = "Hagbarth Skjold Andersen";
@@ -20,7 +21,7 @@ function jsonResponse(statusCode, payload) {
 
 function validatePayload(body) {
   if (!body || typeof body !== "object") return "Ugyldig anmodning.";
-  const { name, email, scores, answerQ3, answerQ5, consent } = body;
+  const { name, email, scores, answers, consent } = body;
 
   if (!name || typeof name !== "string" || !name.trim()) return "Navn mangler.";
   if (!email || typeof email !== "string" || !EMAIL_RE.test(email)) return "Ugyldig e-mailadresse.";
@@ -31,8 +32,12 @@ function validatePayload(body) {
   ) {
     return "Ugyldige scores.";
   }
-  if (answerQ3 !== undefined && typeof answerQ3 !== "string") return "Ugyldigt svar (spørgsmål 3).";
-  if (answerQ5 !== undefined && typeof answerQ5 !== "string") return "Ugyldigt svar (spørgsmål 5).";
+  if (!Array.isArray(answers) || answers.length !== 7) return "Ugyldige svar.";
+  for (const answer of answers) {
+    if (!answer || typeof answer !== "object") return "Ugyldigt svarformat.";
+    if (!VALID_ANSWER_CATEGORIES.includes(answer.category)) return "Ugyldig kategori i svar.";
+    if (typeof answer.text !== "string" || !answer.text) return "Ugyldig svartekst.";
+  }
   if (consent !== true) return "Samtykke er påkrævet.";
 
   return null;
@@ -52,10 +57,11 @@ exports.handler = async (event) => {
   const validationError = validatePayload(body);
   if (validationError) return jsonResponse(400, { error: validationError });
 
-  const { name, email, scores, answerQ3, answerQ5 } = body;
+  const { name, email, scores, answers } = body;
 
   try {
     const { resultType, primaryCategory, secondaryCategory, mixedCategoryB } = computeResult(scores);
+    const quotes = selectQuotes(answers);
 
     const { buffer: pdfBuffer, filename, subject } = await generateReportPdf({
       name: name.trim(),
@@ -64,8 +70,7 @@ exports.handler = async (event) => {
       primaryCategory,
       secondaryCategory,
       mixedCategoryB,
-      answerQ3: answerQ3 || "",
-      answerQ5: answerQ5 || "",
+      quotes,
       bookingUrl: BOOKING_URL,
       senderName: SENDER_NAME,
     });
@@ -79,8 +84,7 @@ exports.handler = async (event) => {
       secondaryCategory,
       mixedCategoryB,
       scores,
-      answerQ3: answerQ3 || "",
-      answerQ5: answerQ5 || "",
+      quotes,
     });
 
     return jsonResponse(200, { success: true });
