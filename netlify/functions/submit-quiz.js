@@ -10,6 +10,8 @@ const VALID_ANSWER_CATEGORIES = [...CATEGORIES, null];
 const BOOKING_URL = process.env.BOOKING_URL || "https://calendly.com/hagbarth-nmvh/30min";
 const SENDER_NAME = "Hagbarth Skjold Andersen";
 const SENDER_CONTACT = process.env.BREVO_SENDER_EMAIL || "";
+// §12 — ansøgningsfristen [dato] må ikke gættes. Sættes via miljøvariabel, når Hagbarth beslutter den.
+const APPLICATION_DEADLINE = process.env.APPLICATION_DEADLINE || null;
 
 function jsonResponse(statusCode, payload) {
   return {
@@ -73,6 +75,7 @@ exports.handler = async (event) => {
       quotes,
       bookingUrl: BOOKING_URL,
       senderName: SENDER_NAME,
+      applicationDeadline: APPLICATION_DEADLINE,
     });
 
     await sendReportEmail({ toEmail: email, toName: name.trim(), pdfBuffer, filename, subject });
@@ -91,7 +94,7 @@ exports.handler = async (event) => {
   } catch (err) {
     console.error("submit-quiz fejl:", err);
     return jsonResponse(500, {
-      error: "Noget gik galt — prøv igen, eller skriv til " + (SENDER_CONTACT || "os"),
+      error: `Der gik desværre noget galt, og vi kunne ikke sende din profil lige nu. Prøv igen om lidt – eller skriv til ${SENDER_CONTACT || "os"}, så sender vi den manuelt.`,
     });
   }
 };

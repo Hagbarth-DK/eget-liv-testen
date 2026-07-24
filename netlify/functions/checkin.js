@@ -11,7 +11,7 @@ function htmlResponse(statusCode, message) {
     headers: { "Content-Type": "text/html; charset=utf-8" },
     body: `<!doctype html>
 <html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bundniveau-Testen — Check-in</title>
+<title>Bundniveau-Testen — Ugentlig status</title>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fffdfa; color: #1f1f1f; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 24px; }
   .card { max-width: 440px; text-align: center; }

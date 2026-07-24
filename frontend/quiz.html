@@ -15,17 +15,17 @@
     <section id="bnt-state-intro" class="bnt-state">
       <h2 class="bnt-heading">Hvorfor får du ikke gjort det, du godt ved er vigtigt?</h2>
       <p class="bnt-text">
-        Tag Bundniveau-Testen og find det mønster, der typisk overtager, når energien falder,
-        planen bliver forstyrret, eller motivationen ikke møder op.
+        Tag Bundniveau-Testen, og find det mønster, der typisk tager over, når energien falder,
+        planen bliver forstyrret, eller motivationen svigter.
       </p>
       <ul class="bnt-list">
         <li>7 konkrete spørgsmål</li>
         <li>Cirka 2 minutter</li>
-        <li>En personlig 5-siders Bundniveau-Profil sendt direkte til din e-mail</li>
+        <li>En personlig Bundniveau-Profil direkte i din indbakke</li>
       </ul>
       <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-start-btn">START TESTEN</button>
-      <p class="bnt-microtext">Find dit mønster og se, hvilket led i din eksekvering der først bryder sammen.</p>
-      <p class="bnt-microtext">Testen er et refleksionsværktøj — ikke en klinisk eller psykologisk vurdering.</p>
+      <p class="bnt-microtext">Find dit mønster, og se, hvor vejen fra beslutning til handling typisk bryder sammen.</p>
+      <p class="bnt-microtext">Testen er et refleksionsværktøj – ikke en klinisk eller psykologisk vurdering.</p>
     </section>
 
     <!-- QUESTION STATE -->
@@ -37,21 +37,22 @@
         <p class="bnt-progress-label" id="bnt-progress-label">Spørgsmål 1 af 7</p>
       </div>
       <p class="bnt-instruction" id="bnt-instruction" hidden>
-        Svar på det, du faktisk gør. Vælg det svar, der bedst beskriver din adfærd i virkeligheden —
+        Svar på det, du faktisk gør. Vælg det svar, der bedst beskriver din adfærd i virkeligheden –
         især på pressede eller uforudsigelige dage. Vælg ikke det svar, du synes, du burde kunne give.
       </p>
       <h3 class="bnt-question" id="bnt-question-text"></h3>
       <div class="bnt-options" id="bnt-options"></div>
-      <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-next-btn" disabled>Næste</button>
+      <p class="bnt-error" id="bnt-question-error" hidden>Vælg et svar, før du går videre.</p>
+      <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-next-btn">Næste</button>
     </section>
 
     <!-- EMAIL GATE STATE -->
     <section id="bnt-state-email" class="bnt-state" hidden>
       <h3 class="bnt-heading">Din Bundniveau-Profil er klar.</h3>
       <p class="bnt-text">
-        Indtast dit fornavn og din e-mail, så sender jeg din personlige 5-siders profil.
-        Du får din pointfordeling, forklaringen på dit tydeligste mønster og den B.U.N.D.-struktur,
-        der viser, hvad der skal på plads, hvis du vil skabe stabil fremdrift.
+        Indtast dit fornavn og din e-mail, så sender jeg din personlige profil. Du får din pointfordeling,
+        en forklaring på, hvad dine svar viser, og en introduktion til B.U.N.D. – strukturen, der viser,
+        hvad der skal på plads, hvis du vil skabe stabil fremdrift.
       </p>
 
       <label class="bnt-label" for="bnt-name">Fornavn</label>
@@ -63,8 +64,8 @@
       <label class="bnt-checkbox-row">
         <input type="checkbox" id="bnt-consent" />
         <span>
-          Ja tak. Send mig min Bundniveau-Profil og relevante opfølgende e-mails om B.U.N.D. og kommende forløb.
-          Jeg kan afmelde mig med ét klik. Læs vores
+          Ja tak. Send mig min Bundniveau-Profil og e-mails om B.U.N.D. og kommende forløb.
+          Jeg kan til enhver tid afmelde mig med ét klik. Læs vores
           <a href="https://hagbarth-skjold-andersen.lumant.nu/privatlivs-og-cookiepolitik" target="_blank" rel="noopener">privatlivspolitik</a>.
         </span>
       </label>
@@ -74,12 +75,13 @@
       <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-submit-btn">
         SEND MIN BUNDNIVEAU-PROFIL
       </button>
+      <p class="bnt-microtext">Din profil tilpasses med dit navn, dit resultat og udvalgte svar.</p>
     </section>
 
     <!-- CONFIRMATION STATE -->
     <section id="bnt-state-confirm" class="bnt-state" hidden>
       <h2 class="bnt-heading">Tjek din indbakke</h2>
-      <p class="bnt-text">Din Bundniveau-Profil er på vej — den lander i din indbakke om et øjeblik.</p>
+      <p class="bnt-text">Tjek din indbakke – din Bundniveau-Profil er på vej.</p>
     </section>
 
   </div>
@@ -163,7 +165,7 @@
       text: "Når du ved, hvad der er vigtigst at gøre, hvad sker der oftest?",
       options: [
         { label: "Jeg tænker længe over det og får ofte ikke taget det første skridt.", category: "UDS" },
-        { label: "Jeg tager et konkret første skridt, også hvis det er lille.", category: null },
+        { label: "Jeg tager et konkret første skridt, også selv om det er lille.", category: null },
         { label: "Jeg går i gang, hvis jeg kan gøre det ordentligt; ellers venter jeg.", category: "TOP" },
         { label: "Jeg ender let med at begynde på noget andet, der også virker vigtigt.", category: "SPR" },
         { label: "Ingen af dem / andet.", category: null }
@@ -172,8 +174,8 @@
     {
       text: "Hvordan ser dine vigtigste mål og projekter ud lige nu?",
       options: [
-        { label: "Jeg har mange i gang og har svært ved at vælge én klar prioritet.", category: "SPR" },
-        { label: "Jeg har få, men kravene til dem er så høje, at fremdriften bliver tung.", category: "TOP" },
+        { label: "Jeg har mange projekter i gang og har svært ved at vælge én klar prioritet.", category: "SPR" },
+        { label: "Jeg har få projekter, men kravene til dem er så høje, at fremdriften bliver tung.", category: "TOP" },
         { label: "Jeg har valgt få tydelige prioriteter og ved, hvad næste skridt er.", category: null },
         { label: "Jeg ved, hvilket projekt der betyder mest, men det står stadig næsten stille.", category: "UDS" },
         { label: "Ingen af dem / andet.", category: null }
@@ -183,7 +185,7 @@
       text: "Hvad sker der typisk på en dårlig dag, hvor du er træt, presset eller uden overskud?",
       options: [
         { label: "Jeg prøver stadig at holde hele planen og ender ofte med at brænde ud eller opgive.", category: "TOP" },
-        { label: "Jeg udskyder det vigtige og håber, at i morgen bliver lettere.", category: "UDS" },
+        { label: "Jeg udskyder det vigtige og håber, at det bliver lettere i morgen.", category: "UDS" },
         { label: "Jeg hopper mellem mindre opgaver og får ikke afsluttet det vigtigste.", category: "SPR" },
         { label: "Jeg gennemfører en mindre version af det vigtigste.", category: null },
         { label: "Ingen af dem / andet.", category: null }
@@ -192,9 +194,9 @@
     {
       text: "Når du laver en aftale med dig selv, hvad er mest typisk?",
       options: [
-        { label: "Jeg gør det — eller justerer aftalen konkret, hvis virkeligheden ændrer sig.", category: null },
+        { label: "Jeg gør det – eller justerer aftalen konkret, hvis virkeligheden ændrer sig.", category: null },
         { label: "Jeg udsætter uden at træffe en ny, konkret beslutning.", category: "UDS" },
-        { label: "Jeg holder den i intense perioder, men niveauet er for højt til at holde.", category: "TOP" },
+        { label: "Jeg holder aftalen i intense perioder, men niveauet er for højt til, at jeg kan fastholde det.", category: "TOP" },
         { label: "Jeg starter, men en ny idé eller opgave overtager hurtigt.", category: "SPR" },
         { label: "Ingen af dem / andet.", category: null }
       ]
@@ -202,8 +204,8 @@
     {
       text: "Hvordan reagerer du typisk, når en plan bliver forstyrret?",
       options: [
-        { label: "Jeg mister momentum og får ikke genstartet, selv om jeg ved, hvad jeg burde gøre.", category: "UDS" },
-        { label: "Jeg laver en ny plan eller skifter fokus i stedet for at fortsætte den gamle.", category: "SPR" },
+        { label: "Jeg mister momentum og kommer ikke rigtigt i gang igen, selv om jeg ved, hvad jeg burde gøre.", category: "UDS" },
+        { label: "Jeg laver en ny plan eller skifter fokus i stedet for at fortsætte den oprindelige.", category: "SPR" },
         { label: "Jeg justerer omfanget eller tidspunktet og fortsætter.", category: null },
         { label: "Planen føles ødelagt, hvis den ikke kan gennemføres som tænkt.", category: "TOP" },
         { label: "Ingen af dem / andet.", category: null }
@@ -213,9 +215,9 @@
       text: "Når du falder ud af en rutine, hvad sker der typisk?",
       options: [
         { label: "Jeg leder efter en ny metode eller rutine, der virker mere spændende.", category: "SPR" },
-        { label: "Jeg genstarter ved næste mulige handling uden at redesigne det hele.", category: null },
+        { label: "Jeg genstarter med den næste mulige handling uden at lægge hele planen om.", category: null },
         { label: "Jeg venter til mandag, næste måned eller det helt rigtige tidspunkt.", category: "UDS" },
-        { label: "Jeg genstarter for hårdt og kan kun holde det i kort tid.", category: "TOP" },
+        { label: "Jeg genstarter for hårdt og kan kun holde niveauet i kort tid.", category: "TOP" },
         { label: "Ingen af dem / andet.", category: null }
       ]
     },
@@ -224,7 +226,7 @@
       options: [
         { label: "\"Det tæller ikke, hvis jeg ikke kan gøre det ordentligt.\"", category: "TOP" },
         { label: "\"Hvad er den mindste handling, jeg stadig kan tage i dag?\"", category: null },
-        { label: "\"Jeg kan åbenbart ikke stole på, at jeg gør det, jeg siger.\"", category: "UDS" },
+        { label: "\"Jeg kan åbenbart ikke stole på, at jeg gør det, jeg har besluttet.\"", category: "UDS" },
         { label: "\"Jeg ved ikke, hvad jeg skal vælge først.\"", category: "SPR" },
         { label: "Ingen af dem / andet.", category: null }
       ]
@@ -252,6 +254,7 @@
   function renderQuestion() {
     var q = QUESTIONS[currentQuestion];
     selectedOptionIndex = null;
+    document.getElementById("bnt-question-error").hidden = true;
 
     document.getElementById("bnt-progress-label").innerText =
       "Spørgsmål " + (currentQuestion + 1) + " af " + QUESTIONS.length;
@@ -270,20 +273,21 @@
       btn.innerText = opt.label;
       btn.onclick = function () {
         selectedOptionIndex = idx;
+        document.getElementById("bnt-question-error").hidden = true;
         Array.prototype.forEach.call(optionsEl.children, function (child) {
           child.classList.remove("bnt-selected");
         });
         btn.classList.add("bnt-selected");
-        document.getElementById("bnt-next-btn").disabled = false;
       };
       optionsEl.appendChild(btn);
     });
-
-    document.getElementById("bnt-next-btn").disabled = true;
   }
 
   function handleNext() {
-    if (selectedOptionIndex === null) return;
+    if (selectedOptionIndex === null) {
+      document.getElementById("bnt-question-error").hidden = false;
+      return;
+    }
     var q = QUESTIONS[currentQuestion];
     var chosen = q.options[selectedOptionIndex];
     if (chosen.category) scores[chosen.category] += 1;
@@ -318,9 +322,9 @@
     var email = document.getElementById("bnt-email").value.trim();
     var consent = document.getElementById("bnt-consent").checked;
 
-    if (!name) return showError("Udfyld venligst dit fornavn.");
-    if (!isValidEmail(email)) return showError("Indtast venligst en gyldig e-mailadresse.");
-    if (!consent) return showError("Du skal give samtykke for at modtage din profil.");
+    if (!name) return showError("Skriv dit fornavn, så vi ved, hvem profilen er til.");
+    if (!isValidEmail(email)) return showError("E-mailadressen ser ikke helt rigtig ud. Kontrollér den, og prøv igen.");
+    if (!consent) return showError("Sæt flueben ved samtykket, før vi kan sende din profil.");
 
     var submitBtn = document.getElementById("bnt-submit-btn");
     submitBtn.disabled = true;
@@ -342,12 +346,12 @@
 
       if (!res.ok) {
         var errBody = await res.json().catch(function () { return {}; });
-        throw new Error(errBody.error || "Der opstod en fejl.");
+        throw new Error(errBody.error || "Der gik desværre noget galt, og vi kunne ikke sende din profil lige nu. Prøv igen om lidt.");
       }
 
       showState("confirm");
     } catch (e) {
-      showError("Noget gik galt — prøv igen, eller skriv til os direkte.");
+      showError(e.message);
       submitBtn.disabled = false;
       submitBtn.innerText = "SEND MIN BUNDNIVEAU-PROFIL";
     }
