@@ -61,6 +61,7 @@
 
       <label class="bnt-label" for="bnt-email">E-mail</label>
       <input class="bnt-input" type="email" id="bnt-email" autocomplete="email" />
+      <input type="text" id="bnt-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />
 
       <label class="bnt-checkbox-row">
         <input type="checkbox" id="bnt-consent" />
@@ -225,6 +226,7 @@
   var answerTexts = [];
   var currentQuestion = 0;
   var selectedOptionIndex = null;
+  var startedAt = 0;
 
   var states = {
     intro: document.getElementById("bnt-state-intro"),
@@ -328,7 +330,9 @@
           scores: scores,
           answers: answerTexts,
           consent: true,
-          consentTimestamp: new Date().toISOString()
+          consentTimestamp: new Date().toISOString(),
+          hp: document.getElementById("bnt-hp").value,
+          elapsedMs: startedAt ? Date.now() - startedAt : null
         })
       });
 
@@ -349,6 +353,7 @@
     currentQuestion = 0;
     scores = { TOP: 0, SPR: 0, UDS: 0 };
     answerTexts = [];
+    startedAt = Date.now();
     renderQuestion();
     showState("question");
   };
