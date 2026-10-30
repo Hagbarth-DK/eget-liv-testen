@@ -61,10 +61,12 @@ exports.handler = async (event) => {
 
   const { name, email, scores, answers } = body;
 
+  let step = "score";
   try {
     const { resultType, primaryCategory, secondaryCategory, mixedCategoryB } = computeResult(scores);
     const quotes = selectQuotes(answers);
 
+    step = "pdf";
     const { buffer: pdfBuffer, filename, subject } = await generateReportPdf({
       name: name.trim(),
       scores,
@@ -78,7 +80,9 @@ exports.handler = async (event) => {
       applicationDeadline: APPLICATION_DEADLINE,
     });
 
+    step = "mail";
     await sendReportEmail({ toEmail: email, toName: name.trim(), pdfBuffer, filename, subject });
+    step = "kontakt";
     await upsertContact({
       email,
       name: name.trim(),
@@ -92,9 +96,12 @@ exports.handler = async (event) => {
 
     return jsonResponse(200, { success: true });
   } catch (err) {
-    console.error("submit-quiz fejl:", err);
+    console.error("submit-quiz fejl:", step, err);
+    // Fejlkoden viser kun trinnet og en eventuel HTTP-status fra Brevo — aldrig nøgler eller svartekst.
+    const upstream = (String(err && err.message).match(/\((\d{3})\)/) || [])[1] || "x";
+    const contact = SENDER_CONTACT && !/^no-?reply@/i.test(SENDER_CONTACT) ? ` – eller skriv til ${SENDER_CONTACT}` : "";
     return jsonResponse(500, {
-      error: `Der gik desværre noget galt, og vi kunne ikke sende din profil lige nu. Prøv igen om lidt – eller skriv til ${SENDER_CONTACT || "os"}, så sender vi den manuelt.`,
+      error: `Der gik desværre noget galt, og vi kunne ikke sende din profil lige nu. Prøv igen om lidt${contact}. (Fejlkode: ${step}-${upstream})`,
     });
   }
 };
