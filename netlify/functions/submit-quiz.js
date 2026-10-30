@@ -99,9 +99,11 @@ exports.handler = async (event) => {
     console.error("submit-quiz fejl:", step, err);
     // Fejlkoden viser kun trinnet og en eventuel HTTP-status fra Brevo — aldrig nøgler eller svartekst.
     const upstream = (String(err && err.message).match(/\((\d{3})\)/) || [])[1] || "x";
+    // Brevos egen korte forklaring (fx "Key not found" eller "unrecognised IP address") — indeholder aldrig nøglen.
+    const brevoMsg = (() => { try { return JSON.parse(String(err.message).split("): ")[1]).message || ""; } catch { return ""; } })().slice(0, 120);
     const contact = SENDER_CONTACT && !/^no-?reply@/i.test(SENDER_CONTACT) ? ` – eller skriv til ${SENDER_CONTACT}` : "";
     return jsonResponse(500, {
-      error: `Der gik desværre noget galt, og vi kunne ikke sende din profil lige nu. Prøv igen om lidt${contact}. (Fejlkode: ${step}-${upstream})`,
+      error: `Der gik desværre noget galt, og vi kunne ikke sende din profil lige nu. Prøv igen om lidt${contact}. (Fejlkode: ${step}-${upstream}${brevoMsg ? " · " + brevoMsg : ""})`,
     });
   }
 };
