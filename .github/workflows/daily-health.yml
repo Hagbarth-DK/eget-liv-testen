@@ -1,0 +1,63 @@
+name: Dagligt tjek af testen
+
+# Hver morgen tjekkes hele kæden bag testen "Hvor falder dit eget liv igennem?":
+#  1. Testsiden på Lumant svarer og indeholder testen.
+#  2. Programmet på Netlify svarer.
+#  3. Brevo-nøglen virker fra Netlify (uden at sende en mail).
+# Fejler noget, oprettes et GitHub-issue med label "alarm" og @-mention af ejeren (mail).
+# Lukkes automatisk, når tjekket virker igen.
+
+on:
+  schedule:
+    - cron: "17 5 * * *"   # dagligt ca. kl. 06-07 dansk tid
+  workflow_dispatch: {}
+  push:
+    paths:
+      - "trigger/health.txt"
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tjek testsiden, Netlify og Brevo
+        id: check
+        run: |
+          set +e
+          PROBLEMS=""
+          PAGE="$(curl -sS -m 30 https://hagbarth-skjold-andersen.lumant.nu/test)"
+          echo "$PAGE" | grep -q "submit-quiz" || PROBLEMS="${PROBLEMS}- Testsiden på Lumant svarer ikke eller mangler testen.\n"
+          echo "$PAGE" | grep -qi "bundniveau-test<\|Bundniveau-Testen" && PROBLEMS="${PROBLEMS}- Testsiden viser igen det gamle navn Bundniveau.\n"
+          PING="$(curl -sS -m 30 https://bejewelled-dragon-5e69df.netlify.app/.netlify/functions/ping)"
+          echo "$PING" | grep -q '"ok"' || PROBLEMS="${PROBLEMS}- Programmet på Netlify svarer ikke (ping: ${PING}).\n"
+          HEALTH="$(curl -sS -m 30 https://bejewelled-dragon-5e69df.netlify.app/.netlify/functions/health)"
+          echo "$HEALTH" | grep -q '"ok":true' || PROBLEMS="${PROBLEMS}- Brevo afviser at sende for testen (svar: ${HEALTH}). Profiler bliver ikke sendt.\n"
+          echo "health: $HEALTH"
+          printf "%b" "$PROBLEMS" > problems.txt
+          if [ -s problems.txt ]; then cat problems.txt; exit 1; fi
+          echo "Alt virker."
+
+      - name: Alarm ved fejl
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OWNER: ${{ github.repository_owner }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create alarm --color B60205 --description "Testen virker ikke" --repo "${{ github.repository }}" 2>/dev/null || true
+          DETAILS="$(cat problems.txt 2>/dev/null || echo 'Tjekket stoppede uventet. Se loggen.')"
+          BODY="$(printf '@%s\n\nDet daglige tjek af testen \"Hvor falder dit eget liv igennem?\" fandt et problem:\n\n%s\n\nLog: %s' "$OWNER" "$DETAILS" "$RUN_URL")"
+          OPEN="$(gh issue list --repo "${{ github.repository }}" --label alarm --state open --json number --jq '.[0].number')"
+          if [ -n "$OPEN" ]; then gh issue comment "$OPEN" --repo "${{ github.repository }}" --body "$BODY";
+          else gh issue create --repo "${{ github.repository }}" --title "🔴 Testen virker ikke $(date -u +%F)" --label alarm --body "$BODY"; fi
+
+      - name: Luk alarm når det virker igen
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for n in $(gh issue list --repo "${{ github.repository }}" --label alarm --state open --json number --jq '.[].number'); do
+            gh issue close "$n" --repo "${{ github.repository }}" --comment "✅ Løst: det daglige tjek virker igen $(date -u +%F)."
+          done
