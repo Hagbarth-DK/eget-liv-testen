@@ -1,6 +1,9 @@
 <!--
-  Bundniveau-Testen — Lumant HTML-embed
+  Testen "Hvor falder dit eget liv igennem?" — Lumant HTML-embed
   ============================================
+  Rettet 30/10-2026 efter Den røde tråd (budskab) og designsystemet
+  "Hagbarth Skjold Andersen" (farver, skrift). Spørgsmål, scoring og
+  backend er uændrede.
   FØR brug:
   1. Erstat SUBMIT_URL herunder med din faktiske Netlify-funktions-URL,
      fx https://mit-site-123.netlify.app/.netlify/functions/submit-quiz
@@ -13,18 +16,17 @@
 
     <!-- INTRO STATE -->
     <section id="bnt-state-intro" class="bnt-state">
-      <h2 class="bnt-heading">Hvorfor får du ikke gjort det, du godt ved er vigtigt?</h2>
+      <p class="bnt-quote">"På arbejdet får jeg alt gjort. Mit eget liv kommer altid bagerst."</p>
+      <h2 class="bnt-heading">Hvor falder dit eget liv igennem?</h2>
       <p class="bnt-text">
-        Tag Bundniveau-Testen, og find det mønster, der typisk tager over, når energien falder,
-        planen bliver forstyrret, eller motivationen svigter.
+        Den gratis test viser det ene sted, hvor dit eget liv falder igennem, når jobbet har taget det meste af dagen.
       </p>
       <ul class="bnt-list">
-        <li>7 konkrete spørgsmål</li>
+        <li>7 korte spørgsmål</li>
         <li>Cirka 2 minutter</li>
-        <li>En personlig Bundniveau-Profil direkte i din indbakke</li>
+        <li>Din personlige profil direkte i din indbakke</li>
       </ul>
-      <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-start-btn">START TESTEN</button>
-      <p class="bnt-microtext">Find dit mønster, og se, hvor vejen fra beslutning til handling typisk bryder sammen.</p>
+      <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-start-btn">Tag testen</button>
       <p class="bnt-microtext">Testen er et refleksionsværktøj – ikke en klinisk eller psykologisk vurdering.</p>
     </section>
 
@@ -37,8 +39,8 @@
         <p class="bnt-progress-label" id="bnt-progress-label">Spørgsmål 1 af 7</p>
       </div>
       <p class="bnt-instruction" id="bnt-instruction" hidden>
-        Svar på det, du faktisk gør. Vælg det svar, der bedst beskriver din adfærd i virkeligheden –
-        især på pressede eller uforudsigelige dage. Vælg ikke det svar, du synes, du burde kunne give.
+        Tænk på dit eget liv uden for jobbet: kroppen, maden, dine egne projekter og det, du har lovet dig selv.
+        Vælg det svar, der passer på det, du faktisk gør, ikke det, du synes, du burde gøre.
       </p>
       <h3 class="bnt-question" id="bnt-question-text"></h3>
       <div class="bnt-options" id="bnt-options"></div>
@@ -48,11 +50,10 @@
 
     <!-- EMAIL GATE STATE -->
     <section id="bnt-state-email" class="bnt-state" hidden>
-      <h3 class="bnt-heading">Din Bundniveau-Profil er klar.</h3>
+      <h3 class="bnt-heading">Din profil er klar</h3>
       <p class="bnt-text">
-        Indtast dit fornavn og din e-mail, så sender jeg din personlige profil. Du får din pointfordeling,
-        en forklaring på, hvad dine svar viser, og en introduktion til B.U.N.D. – strukturen, der viser,
-        hvad der skal på plads, hvis du vil skabe stabil fremdrift.
+        Skriv dit fornavn og din e-mail, så sender jeg din personlige profil. Den viser, hvor dit eget liv
+        falder igennem, og hvad der skal på plads, før det kan holde ved.
       </p>
 
       <label class="bnt-label" for="bnt-name">Fornavn</label>
@@ -64,7 +65,7 @@
       <label class="bnt-checkbox-row">
         <input type="checkbox" id="bnt-consent" />
         <span>
-          Ja tak. Send mig min Bundniveau-Profil og e-mails om B.U.N.D. og kommende forløb.
+          Ja tak. Send mig min profil og e-mails om testen og kommende forløb.
           Jeg kan til enhver tid afmelde mig med ét klik. Læs vores
           <a href="https://hagbarth-skjold-andersen.lumant.nu/privatlivs-og-cookiepolitik" target="_blank" rel="noopener">privatlivspolitik</a>.
         </span>
@@ -73,7 +74,7 @@
       <p class="bnt-error" id="bnt-error" hidden></p>
 
       <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-submit-btn">
-        SEND MIN BUNDNIVEAU-PROFIL
+        Send min profil
       </button>
       <p class="bnt-microtext">Din profil tilpasses med dit navn, dit resultat og udvalgte svar.</p>
     </section>
@@ -81,77 +82,64 @@
     <!-- CONFIRMATION STATE -->
     <section id="bnt-state-confirm" class="bnt-state" hidden>
       <h2 class="bnt-heading">Tjek din indbakke</h2>
-      <p class="bnt-text">Tjek din indbakke – din Bundniveau-Profil er på vej.</p>
+      <p class="bnt-text">Din profil er på vej og lander i din indbakke om et øjeblik.</p>
     </section>
 
   </div>
 </div>
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <style>
+  /* Designsystem "Hagbarth Skjold Andersen" (30/10-2026) */
   .bnt-root {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    max-width: 560px;
-    margin: 0 auto;
-    color: #1f1f1f;
+    --navy: #1B2A41; --blue: #2F5D8C; --gul: #FFD23F; --oak: #E6DCC8;
+    --surface: #F6F4EF; --raised: #FFFFFF; --ink: #1B2A41; --muted: #56627A; --line: #D3CCBD;
+    font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    max-width: 560px; margin: 0 auto; color: var(--ink);
   }
-  .bnt-card {
-    border: 1px solid #e5e2dd;
-    border-radius: 14px;
-    padding: 32px;
-    background: #fffdfa;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-  }
+  .bnt-card { border-radius: 16px; overflow: hidden; background: var(--surface); }
+  .bnt-state { padding: 32px 28px; }
+  #bnt-state-intro { background: var(--navy); color: #FFFFFF; }
   .bnt-state[hidden] { display: none; }
-  .bnt-heading { font-size: 24px; margin: 0 0 12px; line-height: 1.3; }
-  .bnt-text { font-size: 16px; line-height: 1.55; color: #3a3a3a; margin: 0 0 20px; }
-  .bnt-question { font-size: 19px; line-height: 1.4; margin: 0 0 18px; }
-  .bnt-list { font-size: 15px; line-height: 1.7; color: #3a3a3a; margin: 0 0 22px; padding-left: 20px; }
-  .bnt-microtext { font-size: 13px; color: #8a8a8a; margin: 12px 0 0; line-height: 1.5; }
-  .bnt-instruction { font-size: 13px; color: #8a8a8a; font-style: italic; line-height: 1.5; margin: 0 0 16px; }
+  .bnt-quote { font-size: 17px; line-height: 1.45; margin: 0 0 14px; color: var(--gul); font-style: italic; }
+  .bnt-heading { font-family: "Libre Franklin", "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 28px; line-height: 1.2; margin: 0 0 12px; text-wrap: balance; }
+  #bnt-state-intro .bnt-heading { color: #FFFFFF; }
+  .bnt-text { font-size: 17px; line-height: 1.55; color: var(--ink); margin: 0 0 20px; }
+  #bnt-state-intro .bnt-text, #bnt-state-intro .bnt-list { color: #E9EDF3; }
+  .bnt-question { font-family: "Libre Franklin", "Helvetica Neue", Arial, sans-serif; font-size: 20px; line-height: 1.35; font-weight: 700; margin: 0 0 18px; }
+  .bnt-list { font-size: 16px; line-height: 1.7; margin: 0 0 24px; padding-left: 20px; }
+  .bnt-microtext { font-size: 13px; color: var(--muted); margin: 12px 0 0; line-height: 1.5; }
+  #bnt-state-intro .bnt-microtext { color: #B9C3D3; }
+  .bnt-instruction { font-size: 14px; color: var(--muted); line-height: 1.5; margin: 0 0 16px; }
 
-  .bnt-btn {
-    display: inline-block; border: none; border-radius: 8px;
-    padding: 13px 22px; font-size: 15px; font-weight: 600;
-    cursor: pointer; transition: opacity 0.15s, transform 0.05s;
-  }
-  .bnt-btn-primary { background: #6e7554; color: #fff; width: 100%; }
-  .bnt-btn-primary:hover:not(:disabled) { opacity: 0.9; }
-  .bnt-btn-primary:active:not(:disabled) { transform: scale(0.99); }
-  .bnt-btn-primary:disabled { background: #cfd2c6; cursor: not-allowed; }
+  .bnt-btn { display: inline-block; border: none; border-radius: 8px; padding: 14px 22px; font: 700 16px/20px "Source Sans 3", "Segoe UI", system-ui, sans-serif; letter-spacing: .02em; cursor: pointer; transition: opacity .15s, transform .05s; }
+  .bnt-btn-primary { background: var(--gul); color: var(--navy); width: 100%; }
+  .bnt-btn-primary:hover:not(:disabled) { opacity: .92; }
+  .bnt-btn-primary:active:not(:disabled) { transform: scale(.99); }
+  .bnt-btn-primary:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
+  .bnt-btn:focus-visible, .bnt-option:focus-visible, .bnt-input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  #bnt-state-intro .bnt-btn:focus-visible { outline-color: var(--gul); }
 
   .bnt-progress { margin-bottom: 16px; }
-  .bnt-progress-track { background: #eee7de; border-radius: 6px; height: 6px; overflow: hidden; }
-  .bnt-progress-fill { background: #6e7554; height: 100%; width: 0%; transition: width 0.25s ease; }
-  .bnt-progress-label { font-size: 13px; color: #8a8a8a; margin: 8px 0 0; }
+  .bnt-progress-track { background: var(--line); border-radius: 4px; height: 6px; overflow: hidden; }
+  .bnt-progress-fill { background: var(--blue); height: 100%; width: 0%; transition: width .25s ease; }
+  .bnt-progress-label { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
 
   .bnt-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
-  .bnt-option {
-    display: block; text-align: left; width: 100%;
-    border: 1.5px solid #e5e2dd; border-radius: 10px;
-    padding: 14px 16px; font-size: 15px; background: #fff;
-    cursor: pointer; color: #1f1f1f; line-height: 1.45;
-  }
-  .bnt-option:hover { border-color: #b8bca9; }
-  .bnt-option.bnt-selected { border-color: #6e7554; background: #f1f2ec; }
+  .bnt-option { display: block; text-align: left; width: 100%; border: 1.5px solid var(--line); border-radius: 8px; padding: 14px 16px; font: 400 16px/1.45 "Source Sans 3", "Segoe UI", system-ui, sans-serif; background: var(--raised); cursor: pointer; color: var(--ink); }
+  .bnt-option:hover { border-color: var(--blue); }
+  .bnt-option.bnt-selected { border: 2px solid var(--blue); background: #EEF3F8; }
 
-  .bnt-label { display: block; font-size: 13px; font-weight: 600; margin: 14px 0 6px; }
-  .bnt-input {
-    width: 100%; border: 1.5px solid #e5e2dd; border-radius: 8px;
-    padding: 11px 12px; font-size: 15px; box-sizing: border-box;
-  }
-  .bnt-input:focus { outline: none; border-color: #6e7554; }
+  .bnt-label { display: block; font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
+  .bnt-input { width: 100%; border: 1.5px solid var(--line); border-radius: 4px; padding: 11px 12px; font: 400 16px "Source Sans 3", "Segoe UI", system-ui, sans-serif; box-sizing: border-box; background: var(--raised); color: var(--ink); }
+  .bnt-input:focus { border-color: var(--blue); }
 
-  .bnt-checkbox-row {
-    display: flex; gap: 10px; align-items: flex-start;
-    font-size: 13px; color: #555; margin: 18px 0; line-height: 1.5;
-  }
-  .bnt-checkbox-row input { margin-top: 3px; flex-shrink: 0; }
-  .bnt-checkbox-row a { color: #6e7554; }
+  .bnt-checkbox-row { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--muted); margin: 18px 0; line-height: 1.5; }
+  .bnt-checkbox-row input { margin-top: 3px; flex-shrink: 0; accent-color: var(--blue); }
+  .bnt-checkbox-row a { color: var(--blue); }
 
-  .bnt-error {
-    background: #fdecea; color: #a12a1f; border-radius: 8px;
-    padding: 10px 12px; font-size: 14px; margin: 0 0 14px;
-  }
+  .bnt-error { background: #FBEAE7; color: #8E2A1C; border-radius: 8px; padding: 10px 12px; font-size: 14px; margin: 0 0 14px; }
+  @media (max-width: 420px) { .bnt-state { padding: 24px 18px; } .bnt-heading { font-size: 24px; } }
 </style>
 
 <script>
@@ -182,7 +170,7 @@
       ]
     },
     {
-      text: "Hvad sker der typisk på en dårlig dag, hvor du er træt, presset eller uden overskud?",
+      text: "Hvad sker der typisk på en dag, hvor du er træt, presset eller uden overskud?",
       options: [
         { label: "Jeg prøver stadig at holde hele planen og ender ofte med at brænde ud eller opgive.", category: "TOP" },
         { label: "Jeg udskyder det vigtige og håber, at det bliver lettere i morgen.", category: "UDS" },
@@ -353,7 +341,7 @@
     } catch (e) {
       showError(e.message);
       submitBtn.disabled = false;
-      submitBtn.innerText = "SEND MIN BUNDNIVEAU-PROFIL";
+      submitBtn.innerText = "Send min profil";
     }
   }
 
