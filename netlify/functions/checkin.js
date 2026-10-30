@@ -11,14 +11,14 @@ function htmlResponse(statusCode, message) {
     headers: { "Content-Type": "text/html; charset=utf-8" },
     body: `<!doctype html>
 <html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bundniveau-Testen — Ugentlig status</title>
+<title>Ugentlig status</title>
 <style>
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fffdfa; color: #1f1f1f; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 24px; }
+  body { font-family: "Segoe UI", system-ui, sans-serif; background: #F6F4EF; color: #1B2A41; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 24px; }
   .card { max-width: 440px; text-align: center; }
   h1 { font-size: 22px; margin-bottom: 12px; }
-  p { font-size: 16px; line-height: 1.55; color: #3a3a3a; }
+  p { font-size: 16px; line-height: 1.55; color: #1B2A41; }
 </style>
-</head><body><div class="card"><h1>Bundniveau-Testen</h1><p>${message}</p></div></body></html>`,
+</head><body><div class="card"><h1>Ugentlig status</h1><p>${message}</p></div></body></html>`,
   };
 }
 

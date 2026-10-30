@@ -2,7 +2,7 @@
   "name": "bundniveau-test",
   "version": "1.0.0",
   "private": true,
-  "description": "Backend for Bundniveau-Testen: quiz scoring gate, PDF-rapport og Brevo-integration",
+  "description": "Backend for testen \"Hvor falder dit eget liv igennem?\": quiz scoring gate, PDF-rapport og Brevo-integration",
   "dependencies": {
     "pdf-lib": "^1.17.1"
   }
