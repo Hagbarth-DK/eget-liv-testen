@@ -1,4 +1,6 @@
-# Bundniveau-Testen
+# Testen "Hvor falder dit eget liv igennem?"
+
+> Omdøbt 30/10-2026 efter Den røde tråd. Testen må ikke hedde Bundniveau i første kontakt.
 
 Diagnostisk quiz til Lumant: 7 spørgsmål → arketype-scoring → gratis teaser →
 e-mail-gate → personlig PDF-rapport via Brevo.
@@ -6,7 +8,7 @@ e-mail-gate → personlig PDF-rapport via Brevo.
 ## Struktur
 
 ```
-bundniveau-test/
+eget-liv-testen/
 ├── frontend/
 │   ├── test-cors.html      ← §0: minimal CORS/embed-testblok (indsæt FØRST)
 │   └── quiz.html            ← §1: fuld quiz (indsæt i Lumant, når CORS-test er OK)
@@ -33,7 +35,7 @@ går live.
 
 1. Opret gratis konto på [brevo.com](https://www.brevo.com) (300 mails/dag gratis).
 2. Verificér afsender-domænet (fx `hagbarthandersen.com`) under Settings → Senders & IP.
-3. Opret en mailliste, fx "Bundniveau-Test Leads" → notér dens **List ID**.
+3. Opret en mailliste, fx "Testen — leads" → notér dens **List ID**.
 4. Under SMTP & API → API Keys: opret en API-nøgle → notér den.
 5. Gennemgå og accepter Brevos databehandleraftale (DPA) i kontoindstillingerne.
 

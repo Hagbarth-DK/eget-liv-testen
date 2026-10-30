@@ -1,5 +1,5 @@
 {
-  "name": "bundniveau-test",
+  "name": "eget-liv-testen",
   "version": "1.0.0",
   "private": true,
   "description": "Backend for testen \"Hvor falder dit eget liv igennem?\": quiz scoring gate, PDF-rapport og Brevo-integration",

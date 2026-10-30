@@ -29,7 +29,7 @@ jobs:
           PROBLEMS=""
           PAGE="$(curl -sS -m 30 https://hagbarth-skjold-andersen.lumant.nu/test)"
           echo "$PAGE" | grep -q "submit-quiz" || PROBLEMS="${PROBLEMS}- Testsiden på Lumant svarer ikke eller mangler testen.\n"
-          echo "$PAGE" | grep -qi "bundniveau-test<\|Bundniveau-Testen" && PROBLEMS="${PROBLEMS}- Testsiden viser igen det gamle navn Bundniveau.\n"
+          echo "$PAGE" | grep -qi "Bundniveau-Testen\|Bundniveau-Profil" && PROBLEMS="${PROBLEMS}- Testsiden viser igen det gamle navn Bundniveau.\n"
           PING="$(curl -sS -m 30 https://bejewelled-dragon-5e69df.netlify.app/.netlify/functions/ping)"
           echo "$PING" | grep -q '"ok"' || PROBLEMS="${PROBLEMS}- Programmet på Netlify svarer ikke (ping: ${PING}).\n"
           HEALTH="$(curl -sS -m 30 https://bejewelled-dragon-5e69df.netlify.app/.netlify/functions/health)"
