@@ -1,5 +1,5 @@
 // Prøveudsendelse af én opfølgningsmail. Sendes KUN til Hagbarths egen adresse, uanset hvem der kalder.
-// Brug: /.netlify/functions/followup-test?mail=2   (2, 3, 4 eller 5)
+// Brug: /.netlify/functions/followup-test?mail=2   (2–6)
 const { corsHeaders, preflightResponse } = require("../../lib/cors");
 const { FOLLOWUPS, renderFollowup } = require("../../lib/followupContent");
 const { sendHtmlEmail, unsubscribeUrl } = require("../../lib/brevo");
@@ -17,7 +17,7 @@ exports.handler = async (event) => {
 
   const step = Number((event.queryStringParameters || {}).mail);
   const mail = FOLLOWUPS.find((m) => m.step === step);
-  if (!mail) return { statusCode: 400, headers, body: JSON.stringify({ ok: false, fejl: "mail skal være 2-5" }) };
+  if (!mail) return { statusCode: 400, headers, body: JSON.stringify({ ok: false, fejl: "mail skal være 2-6" }) };
 
   calls.push(now);
   try {
