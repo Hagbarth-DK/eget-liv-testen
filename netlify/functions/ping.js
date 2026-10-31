@@ -6,6 +6,6 @@ exports.handler = async (event) => {
   return {
     statusCode: 200,
     headers: { ...corsHeaders(), "Content-Type": "application/json" },
-    body: JSON.stringify({ status: "ok", version: "2026-10-30-profil" }),
+    body: JSON.stringify({ status: "ok", version: "2026-10-31-omdoebt" }),
   };
 };
