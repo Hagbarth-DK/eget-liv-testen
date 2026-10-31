@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hvor falder dit eget liv igennem? Gratis test</title>
+<link rel="icon" href="https://bejewelled-dragon-5e69df.netlify.app/assets/favicon-32.png">
+<style>html,body{margin:0;background:#F6F4EF}body{padding:16px}</style>
+</head>
+<body>
+<!--
+  Testen "Hvor falder dit eget liv igennem?" — Lumant HTML-embed
+  ============================================
+  Rettet 30/10-2026 efter Den røde tråd (budskab) og designsystemet
+  "Hagbarth Skjold Andersen" (farver, skrift). Spørgsmål, scoring og
+  backend er uændrede.
+  FØR brug:
+  1. Erstat SUBMIT_URL herunder med din faktiske Netlify-funktions-URL,
+     fx https://mit-site-123.netlify.app/.netlify/functions/submit-quiz
+  2. Erstat PRIVACY_POLICY_URL med linket til din privatlivspolitik-side på Lumant.
+  3. Test §0-CORS-blokken (test-cors.html) FØRST, før denne indsættes.
+  4. Indsæt hele denne fil i Lumants HTML-element under "Indhold" → "Andet".
+-->
+<div id="bnt-root" class="bnt-root">
+  <div class="bnt-card">
+
+    <!-- INTRO STATE -->
+    <section id="bnt-state-intro" class="bnt-state">
+      <p class="bnt-quote">"På arbejdet får jeg alt gjort. Mit eget liv kommer altid bagerst."</p>
+      <h2 class="bnt-heading">Hvor falder dit eget liv igennem?</h2>
+      <p class="bnt-text">
+        Den gratis test viser det ene sted, hvor dit eget liv falder igennem, når jobbet har taget det meste af dagen.
+      </p>
+      <ul class="bnt-list">
+        <li>7 korte spørgsmål</li>
+        <li>Cirka 2 minutter</li>
+        <li>Din personlige profil direkte i din indbakke</li>
+      </ul>
+      <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-start-btn">Tag testen</button>
+      <p class="bnt-microtext">Testen er et refleksionsværktøj – ikke en klinisk eller psykologisk vurdering.</p>
+      <p class="bnt-author"><img src="https://bejewelled-dragon-5e69df.netlify.app/assets/hagbarth-160.jpg" alt="" width="40" height="40"><span><b>Hagbarth Skjold Andersen</b> · 30 år med at få systemer til at holde i virksomheder</span></p>
+    </section>
+
+    <!-- QUESTION STATE -->
+    <section id="bnt-state-question" class="bnt-state" hidden>
+      <div class="bnt-progress">
+        <div class="bnt-progress-track">
+          <div class="bnt-progress-fill" id="bnt-progress-fill"></div>
+        </div>
+        <p class="bnt-progress-label" id="bnt-progress-label">Spørgsmål 1 af 7</p>
+      </div>
+      <p class="bnt-instruction" id="bnt-instruction" hidden>
+        Tænk på dit eget liv uden for jobbet: kroppen, maden, dine egne projekter og det, du har lovet dig selv.
+        Vælg det svar, der passer på det, du faktisk gør, ikke det, du synes, du burde gøre.
+      </p>
+      <h3 class="bnt-question" id="bnt-question-text"></h3>
+      <div class="bnt-options" id="bnt-options"></div>
+      <p class="bnt-error" id="bnt-question-error" hidden>Vælg et svar, før du går videre.</p>
+      <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-next-btn">Næste</button>
+    </section>
+
+    <!-- EMAIL GATE STATE -->
+    <section id="bnt-state-email" class="bnt-state" hidden>
+      <h3 class="bnt-heading">Din profil er klar</h3>
+      <p class="bnt-text">
+        Skriv dit fornavn og din e-mail, så sender jeg din personlige profil. Den viser, hvor dit eget liv
+        falder igennem, og hvad der skal på plads, før det kan holde ved.
+      </p>
+
+      <label class="bnt-label" for="bnt-name">Fornavn</label>
+      <input class="bnt-input" type="text" id="bnt-name" autocomplete="given-name" />
+
+      <label class="bnt-label" for="bnt-email">E-mail</label>
+      <input class="bnt-input" type="email" id="bnt-email" autocomplete="email" />
+      <input type="text" id="bnt-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />
+
+      <label class="bnt-checkbox-row">
+        <input type="checkbox" id="bnt-consent" />
+        <span>
+          Ja tak. Send mig min profil og e-mails om testen og kommende forløb.
+          Jeg kan til enhver tid afmelde mig med ét klik. Læs vores
+          <a href="https://hagbarth-skjold-andersen.lumant.nu/privatlivs-og-cookiepolitik" target="_blank" rel="noopener">privatlivspolitik</a>.
+        </span>
+      </label>
+
+      <p class="bnt-error" id="bnt-error" hidden></p>
+
+      <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-submit-btn">
+        Send min profil
+      </button>
+      <p class="bnt-microtext">Din profil tilpasses med dit navn, dit resultat og udvalgte svar.</p>
+    </section>
+
+    <!-- CONFIRMATION STATE -->
+    <section id="bnt-state-confirm" class="bnt-state" hidden>
+      <h2 class="bnt-heading">Tjek din indbakke</h2>
+      <p class="bnt-text">Din profil er på vej og lander i din indbakke om et øjeblik. Kan du ikke finde den, så kig i spam eller under kampagner.</p>
+      <div class="bnt-next">
+        <p class="bnt-next-label">Dit næste skridt</p>
+        <p class="bnt-text">Vil du tale om dit resultat, kan du allerede nu booke en uforpligtende optagelsessamtale på 30 minutter. Vi ser på dit mål, dit mønster og på, om testpilotforløbet er det rigtige for dig.</p>
+        <a class="bnt-btn bnt-btn-primary bnt-btn-link" href="https://calendly.com/hagbarth-nmvh/30min" target="_blank" rel="noopener">Book en optagelsessamtale</a>
+      </div>
+      <p class="bnt-signoff"><img src="https://bejewelled-dragon-5e69df.netlify.app/assets/hagbarth-160.jpg" alt="" width="40" height="40"><span><b>Hagbarth Skjold Andersen</b><br>Life System Architect</span></p>
+    </section>
+
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+  /* Designsystem "Hagbarth Skjold Andersen" (30/10-2026) */
+  .bnt-root {
+    --navy: #1B2A41; --blue: #2F5D8C; --gul: #FFD23F; --oak: #E6DCC8;
+    --surface: #F6F4EF; --raised: #FFFFFF; --ink: #1B2A41; --muted: #56627A; --line: #D3CCBD;
+    font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    max-width: 560px; margin: 0 auto; color: var(--ink); text-align: left;
+  }
+  /* Siden omkring testen får den varme baggrund fra designsystemet (gælder kun denne side). */
+  body, .bee-page-container, .bee-row, .bee-row-content { background-color: #F6F4EF !important; }
+  .bnt-root { padding: 24px 0; }
+  .bnt-author { font-size: 13px; line-height: 1.5; margin: 16px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.15); color: #B9C3D3; }
+  .bnt-author b { color: #FFFFFF; font-weight: 600; }
+  .bnt-author, .bnt-signoff { display: flex; align-items: center; gap: 12px; }
+  .bnt-author img, .bnt-signoff img { width: 40px; height: 40px; border-radius: 50%; flex: none; object-fit: cover; }
+  .bnt-signoff { font-size: 13px; line-height: 1.4; color: var(--muted); margin: 8px 0 0; }
+  .bnt-signoff b { color: var(--ink); font-weight: 600; }
+  .bnt-next { background: var(--oak); border-radius: 8px; padding: 18px 18px 20px; margin: 4px 0 16px; }
+  .bnt-next .bnt-text { margin-bottom: 16px; }
+  .bnt-next-label { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--blue); margin: 0 0 6px; }
+  .bnt-btn-link { text-align: center; text-decoration: none; box-sizing: border-box; }
+  .bnt-card { border-radius: 16px; overflow: hidden; background: var(--surface); }
+  .bnt-state { padding: 32px 28px; }
+  #bnt-state-intro { background: var(--navy); color: #FFFFFF; }
+  .bnt-state[hidden] { display: none; }
+  .bnt-quote { font-size: 17px; line-height: 1.45; margin: 0 0 14px; color: var(--gul); font-style: italic; }
+  .bnt-heading { font-family: "Libre Franklin", "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 28px; line-height: 1.2; margin: 0 0 12px; text-wrap: balance; }
+  #bnt-state-intro .bnt-heading { color: #FFFFFF; }
+  .bnt-text { font-size: 17px; line-height: 1.55; color: var(--ink); margin: 0 0 20px; }
+  #bnt-state-intro .bnt-text, #bnt-state-intro .bnt-list { color: #E9EDF3; }
+  .bnt-question { font-family: "Libre Franklin", "Helvetica Neue", Arial, sans-serif; font-size: 20px; line-height: 1.35; font-weight: 700; margin: 0 0 18px; }
+  .bnt-list { font-size: 16px; line-height: 1.7; margin: 0 0 24px; padding-left: 20px; text-align: left; list-style: disc outside; }
+  .bnt-microtext { font-size: 13px; color: var(--muted); margin: 12px 0 0; line-height: 1.5; }
+  #bnt-state-intro .bnt-microtext { color: #B9C3D3; }
+  .bnt-instruction { font-size: 14px; color: var(--muted); line-height: 1.5; margin: 0 0 16px; }
+
+  .bnt-btn { display: inline-block; border: none; border-radius: 8px; padding: 14px 22px; font: 700 16px/20px "Source Sans 3", "Segoe UI", system-ui, sans-serif; letter-spacing: .02em; cursor: pointer; transition: opacity .15s, transform .05s; }
+  .bnt-btn-primary { background: var(--gul); color: var(--navy); width: 100%; }
+  .bnt-btn-primary:hover:not(:disabled) { opacity: .92; }
+  .bnt-btn-primary:active:not(:disabled) { transform: scale(.99); }
+  .bnt-btn-primary:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
+  .bnt-btn:focus-visible, .bnt-option:focus-visible, .bnt-input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  #bnt-state-intro .bnt-btn:focus-visible { outline-color: var(--gul); }
+
+  .bnt-progress { margin-bottom: 16px; }
+  .bnt-progress-track { background: var(--line); border-radius: 4px; height: 6px; overflow: hidden; }
+  .bnt-progress-fill { background: var(--blue); height: 100%; width: 0%; transition: width .25s ease; }
+  .bnt-progress-label { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+
+  .bnt-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+  .bnt-option { display: block; text-align: left; width: 100%; border: 1.5px solid var(--line); border-radius: 8px; padding: 14px 16px; font: 400 16px/1.45 "Source Sans 3", "Segoe UI", system-ui, sans-serif; background: var(--raised); cursor: pointer; color: var(--ink); }
+  .bnt-option:hover { border-color: var(--blue); }
+  .bnt-option.bnt-selected { border: 2px solid var(--blue); background: #EEF3F8; }
+
+  .bnt-label { display: block; font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
+  .bnt-input { width: 100%; border: 1.5px solid var(--line); border-radius: 4px; padding: 11px 12px; font: 400 16px "Source Sans 3", "Segoe UI", system-ui, sans-serif; box-sizing: border-box; background: var(--raised); color: var(--ink); }
+  .bnt-input:focus { border-color: var(--blue); }
+
+  .bnt-checkbox-row { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--muted); margin: 18px 0; line-height: 1.5; }
+  .bnt-checkbox-row input { margin-top: 3px; flex-shrink: 0; accent-color: var(--blue); }
+  .bnt-checkbox-row a { color: var(--blue); }
+
+  .bnt-error { background: #FBEAE7; color: #8E2A1C; border-radius: 8px; padding: 10px 12px; font-size: 14px; margin: 0 0 14px; }
+  @media (max-width: 420px) { .bnt-state { padding: 24px 18px; } .bnt-heading { font-size: 24px; } }
+</style>
+
+<script>
+(function () {
+  var SUBMIT_URL = "https://bejewelled-dragon-5e69df.netlify.app/.netlify/functions/submit-quiz";
+
+  // Scoring-koden ("category") er intern og vises aldrig til respondenten.
+  // Hvert spørgsmål har netop ét svar pr. kategori (TOP/SPR/UDS) plus to nul-point-svar.
+  var QUESTIONS = [
+    {
+      text: "Når du ved, hvad der er vigtigst at gøre, hvad sker der oftest?",
+      options: [
+        { label: "Jeg tænker længe over det og får ofte ikke taget det første skridt.", category: "UDS" },
+        { label: "Jeg tager et konkret første skridt, også selv om det er lille.", category: null },
+        { label: "Jeg går i gang, hvis jeg kan gøre det ordentligt; ellers venter jeg.", category: "TOP" },
+        { label: "Jeg ender let med at begynde på noget andet, der også virker vigtigt.", category: "SPR" },
+        { label: "Ingen af dem / andet.", category: null }
+      ]
+    },
+    {
+      text: "Hvordan ser dine vigtigste mål og projekter ud lige nu?",
+      options: [
+        { label: "Jeg har mange projekter i gang og har svært ved at vælge én klar prioritet.", category: "SPR" },
+        { label: "Jeg har få projekter, men kravene til dem er så høje, at fremdriften bliver tung.", category: "TOP" },
+        { label: "Jeg har valgt få tydelige prioriteter og ved, hvad næste skridt er.", category: null },
+        { label: "Jeg ved, hvilket projekt der betyder mest, men det står stadig næsten stille.", category: "UDS" },
+        { label: "Ingen af dem / andet.", category: null }
+      ]
+    },
+    {
+      text: "Hvad sker der typisk på en dag, hvor du er træt, presset eller uden overskud?",
+      options: [
+        { label: "Jeg prøver stadig at holde hele planen og ender ofte med at brænde ud eller opgive.", category: "TOP" },
+        { label: "Jeg udskyder det vigtige og håber, at det bliver lettere i morgen.", category: "UDS" },
+        { label: "Jeg hopper mellem mindre opgaver og får ikke afsluttet det vigtigste.", category: "SPR" },
+        { label: "Jeg gennemfører en mindre version af det vigtigste.", category: null },
+        { label: "Ingen af dem / andet.", category: null }
+      ]
+    },
+    {
+      text: "Når du laver en aftale med dig selv, hvad er mest typisk?",
+      options: [
+        { label: "Jeg gør det – eller justerer aftalen konkret, hvis virkeligheden ændrer sig.", category: null },
+        { label: "Jeg udsætter uden at træffe en ny, konkret beslutning.", category: "UDS" },
+        { label: "Jeg holder aftalen i intense perioder, men niveauet er for højt til, at jeg kan fastholde det.", category: "TOP" },
+        { label: "Jeg starter, men en ny idé eller opgave overtager hurtigt.", category: "SPR" },
+        { label: "Ingen af dem / andet.", category: null }
+      ]
+    },
+    {
+      text: "Hvordan reagerer du typisk, når en plan bliver forstyrret?",
+      options: [
+        { label: "Jeg mister momentum og kommer ikke rigtigt i gang igen, selv om jeg ved, hvad jeg burde gøre.", category: "UDS" },
+        { label: "Jeg laver en ny plan eller skifter fokus i stedet for at fortsætte den oprindelige.", category: "SPR" },
+        { label: "Jeg justerer omfanget eller tidspunktet og fortsætter.", category: null },
+        { label: "Planen føles ødelagt, hvis den ikke kan gennemføres som tænkt.", category: "TOP" },
+        { label: "Ingen af dem / andet.", category: null }
+      ]
+    },
+    {
+      text: "Når du falder ud af en rutine, hvad sker der typisk?",
+      options: [
+        { label: "Jeg leder efter en ny metode eller rutine, der virker mere spændende.", category: "SPR" },
+        { label: "Jeg genstarter med den næste mulige handling uden at lægge hele planen om.", category: null },
+        { label: "Jeg venter til mandag, næste måned eller det helt rigtige tidspunkt.", category: "UDS" },
+        { label: "Jeg genstarter for hårdt og kan kun holde niveauet i kort tid.", category: "TOP" },
+        { label: "Ingen af dem / andet.", category: null }
+      ]
+    },
+    {
+      text: "Hvilken sætning ligner mest din indre stemme, når du ikke får gjort det vigtige?",
+      options: [
+        { label: "\"Det tæller ikke, hvis jeg ikke kan gøre det ordentligt.\"", category: "TOP" },
+        { label: "\"Hvad er den mindste handling, jeg stadig kan tage i dag?\"", category: null },
+        { label: "\"Jeg kan åbenbart ikke stole på, at jeg gør det, jeg har besluttet.\"", category: "UDS" },
+        { label: "\"Jeg ved ikke, hvad jeg skal vælge først.\"", category: "SPR" },
+        { label: "Ingen af dem / andet.", category: null }
+      ]
+    }
+  ];
+
+  var scores = { TOP: 0, SPR: 0, UDS: 0 };
+  var answerTexts = [];
+  var currentQuestion = 0;
+  var selectedOptionIndex = null;
+  var startedAt = 0;
+
+  var states = {
+    intro: document.getElementById("bnt-state-intro"),
+    question: document.getElementById("bnt-state-question"),
+    email: document.getElementById("bnt-state-email"),
+    confirm: document.getElementById("bnt-state-confirm")
+  };
+
+  function showState(name) {
+    Object.keys(states).forEach(function (key) {
+      states[key].hidden = key !== name;
+    });
+  }
+
+  function renderQuestion() {
+    var q = QUESTIONS[currentQuestion];
+    selectedOptionIndex = null;
+    document.getElementById("bnt-question-error").hidden = true;
+
+    document.getElementById("bnt-progress-label").innerText =
+      "Spørgsmål " + (currentQuestion + 1) + " af " + QUESTIONS.length;
+    document.getElementById("bnt-progress-fill").style.width =
+      Math.round(((currentQuestion) / QUESTIONS.length) * 100) + "%";
+    document.getElementById("bnt-instruction").hidden = currentQuestion !== 0;
+
+    document.getElementById("bnt-question-text").innerText = q.text;
+
+    var optionsEl = document.getElementById("bnt-options");
+    optionsEl.innerHTML = "";
+    q.options.forEach(function (opt, idx) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "bnt-option";
+      btn.innerText = opt.label;
+      btn.onclick = function () {
+        selectedOptionIndex = idx;
+        document.getElementById("bnt-question-error").hidden = true;
+        Array.prototype.forEach.call(optionsEl.children, function (child) {
+          child.classList.remove("bnt-selected");
+        });
+        btn.classList.add("bnt-selected");
+      };
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function handleNext() {
+    if (selectedOptionIndex === null) {
+      document.getElementById("bnt-question-error").hidden = false;
+      return;
+    }
+    var q = QUESTIONS[currentQuestion];
+    var chosen = q.options[selectedOptionIndex];
+    if (chosen.category) scores[chosen.category] += 1;
+    answerTexts[currentQuestion] = { category: chosen.category, text: chosen.label };
+
+    if (currentQuestion < QUESTIONS.length - 1) {
+      currentQuestion += 1;
+      renderQuestion();
+    } else {
+      document.getElementById("bnt-progress-fill").style.width = "100%";
+      showState("email");
+    }
+  }
+
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  function showError(message) {
+    var el = document.getElementById("bnt-error");
+    el.innerText = message;
+    el.hidden = false;
+  }
+
+  function hideError() {
+    document.getElementById("bnt-error").hidden = true;
+  }
+
+  async function handleSubmit() {
+    hideError();
+    var name = document.getElementById("bnt-name").value.trim();
+    var email = document.getElementById("bnt-email").value.trim();
+    var consent = document.getElementById("bnt-consent").checked;
+
+    if (!name) return showError("Skriv dit fornavn, så vi ved, hvem profilen er til.");
+    if (!isValidEmail(email)) return showError("E-mailadressen ser ikke helt rigtig ud. Kontrollér den, og prøv igen.");
+    if (!consent) return showError("Sæt flueben ved samtykket, før vi kan sende din profil.");
+
+    var submitBtn = document.getElementById("bnt-submit-btn");
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Sender...";
+
+    try {
+      var res = await fetch(SUBMIT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          scores: scores,
+          answers: answerTexts,
+          consent: true,
+          consentTimestamp: new Date().toISOString(),
+          hp: document.getElementById("bnt-hp").value,
+          elapsedMs: startedAt ? Date.now() - startedAt : null
+        })
+      });
+
+      if (!res.ok) {
+        var errBody = await res.json().catch(function () { return {}; });
+        throw new Error(errBody.error || "Der gik desværre noget galt, og vi kunne ikke sende din profil lige nu. Prøv igen om lidt.");
+      }
+
+      showState("confirm");
+    } catch (e) {
+      showError(e.message);
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Send min profil";
+    }
+  }
+
+  document.getElementById("bnt-start-btn").onclick = function () {
+    currentQuestion = 0;
+    scores = { TOP: 0, SPR: 0, UDS: 0 };
+    answerTexts = [];
+    startedAt = Date.now();
+    renderQuestion();
+    showState("question");
+  };
+
+  document.getElementById("bnt-next-btn").onclick = handleNext;
+  document.getElementById("bnt-submit-btn").onclick = handleSubmit;
+})();
+</script>
+
+</body>
+</html>
