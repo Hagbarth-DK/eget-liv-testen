@@ -1,2 +1,4 @@
 /assets/*
   Access-Control-Allow-Origin: *
+/tmp-upload/*
+  Access-Control-Allow-Origin: *
