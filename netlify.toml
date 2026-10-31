@@ -4,3 +4,7 @@
 
 [functions]
   node_bundler = "esbuild"
+
+# Opfølgningsmails 2–5 efter testen: dagligt kl. 07.17 UTC (8.17 dansk vintertid).
+[functions."followups"]
+  schedule = "17 7 * * *"

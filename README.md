@@ -47,8 +47,10 @@ går live.
 3. I Netlify → Site settings → Environment variables, sæt:
    - `BREVO_API_KEY`
    - `BREVO_LIST_ID`
-   - `BREVO_SENDER_EMAIL` (det verificerede afsender-domænes adresse)
    - `BOOKING_URL` (link til din booking-side, valgfri — har fallback)
+
+   Afsenderen er hagbarth@hagbarthandersen.com og står i `lib/brevo.js` (ikke i Netlify).
+   Opfølgningsmails 2–5 sendes dagligt kl. ca. 8.17 af `netlify/functions/followups.js`.
 4. Deploy. Notér din site-URL, fx `https://mit-site-123.netlify.app`.
 
 ## 3. Test forbindelsen (§0 — gør dette FØR resten)

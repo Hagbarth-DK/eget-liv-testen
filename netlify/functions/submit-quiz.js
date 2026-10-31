@@ -1,7 +1,7 @@
 const { corsHeaders, preflightResponse } = require("../../lib/cors");
 const { generateReportPdf } = require("../../lib/pdf");
 const { computeResult, selectQuotes } = require("../../lib/scoring");
-const { sendReportEmail, upsertContact, getContact } = require("../../lib/brevo");
+const { sendReportEmail, upsertContact, getContact, SENDER } = require("../../lib/brevo");
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CATEGORIES = ["TOP", "SPR", "UDS"];
@@ -9,7 +9,7 @@ const VALID_ANSWER_CATEGORIES = [...CATEGORIES, null];
 
 const BOOKING_URL = process.env.BOOKING_URL || "https://calendly.com/hagbarth-nmvh/30min";
 const SENDER_NAME = "Hagbarth Skjold Andersen";
-const SENDER_CONTACT = process.env.BREVO_SENDER_EMAIL || "";
+const SENDER_CONTACT = SENDER.email;
 // §12 — ansøgningsfristen [dato] må ikke gættes. Sættes via miljøvariabel, når Hagbarth beslutter den.
 const APPLICATION_DEADLINE = process.env.APPLICATION_DEADLINE || null;
 
