@@ -4,6 +4,7 @@
   "private": true,
   "description": "Backend for testen \"Hvor falder dit eget liv igennem?\": quiz scoring gate, PDF-rapport og Brevo-integration",
   "dependencies": {
+    "@pdf-lib/fontkit": "^1.1.1",
     "pdf-lib": "^1.17.1"
   }
 }

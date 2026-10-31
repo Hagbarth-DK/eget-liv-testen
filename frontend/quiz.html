@@ -28,6 +28,7 @@
       </ul>
       <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-start-btn">Tag testen</button>
       <p class="bnt-microtext">Testen er et refleksionsværktøj – ikke en klinisk eller psykologisk vurdering.</p>
+      <p class="bnt-author"><b>Hagbarth Skjold Andersen</b> · 30 år med at få systemer til at holde i virksomheder</p>
     </section>
 
     <!-- QUESTION STATE -->
@@ -83,7 +84,13 @@
     <!-- CONFIRMATION STATE -->
     <section id="bnt-state-confirm" class="bnt-state" hidden>
       <h2 class="bnt-heading">Tjek din indbakke</h2>
-      <p class="bnt-text">Din profil er på vej og lander i din indbakke om et øjeblik.</p>
+      <p class="bnt-text">Din profil er på vej og lander i din indbakke om et øjeblik. Kan du ikke finde den, så kig i spam eller under kampagner.</p>
+      <div class="bnt-next">
+        <p class="bnt-next-label">Dit næste skridt</p>
+        <p class="bnt-text">Vil du tale om dit resultat, kan du allerede nu booke en uforpligtende optagelsessamtale på 30 minutter. Vi ser på dit mål, dit mønster og på, om testpilotforløbet er det rigtige for dig.</p>
+        <a class="bnt-btn bnt-btn-primary bnt-btn-link" href="https://calendly.com/hagbarth-nmvh/30min" target="_blank" rel="noopener">Book en optagelsessamtale</a>
+      </div>
+      <p class="bnt-microtext">Hagbarth Skjold Andersen · Life System Architect</p>
     </section>
 
   </div>
@@ -96,8 +103,17 @@
     --navy: #1B2A41; --blue: #2F5D8C; --gul: #FFD23F; --oak: #E6DCC8;
     --surface: #F6F4EF; --raised: #FFFFFF; --ink: #1B2A41; --muted: #56627A; --line: #D3CCBD;
     font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
-    max-width: 560px; margin: 0 auto; color: var(--ink);
+    max-width: 560px; margin: 0 auto; color: var(--ink); text-align: left;
   }
+  /* Siden omkring testen får den varme baggrund fra designsystemet (gælder kun denne side). */
+  body, .bee-page-container, .bee-row, .bee-row-content { background-color: #F6F4EF !important; }
+  .bnt-root { padding: 24px 0; }
+  .bnt-author { font-size: 13px; line-height: 1.5; margin: 16px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.15); color: #B9C3D3; }
+  .bnt-author b { color: #FFFFFF; font-weight: 600; }
+  .bnt-next { background: var(--oak); border-radius: 8px; padding: 18px 18px 20px; margin: 4px 0 16px; }
+  .bnt-next .bnt-text { margin-bottom: 16px; }
+  .bnt-next-label { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--blue); margin: 0 0 6px; }
+  .bnt-btn-link { text-align: center; text-decoration: none; box-sizing: border-box; }
   .bnt-card { border-radius: 16px; overflow: hidden; background: var(--surface); }
   .bnt-state { padding: 32px 28px; }
   #bnt-state-intro { background: var(--navy); color: #FFFFFF; }
@@ -108,7 +124,7 @@
   .bnt-text { font-size: 17px; line-height: 1.55; color: var(--ink); margin: 0 0 20px; }
   #bnt-state-intro .bnt-text, #bnt-state-intro .bnt-list { color: #E9EDF3; }
   .bnt-question { font-family: "Libre Franklin", "Helvetica Neue", Arial, sans-serif; font-size: 20px; line-height: 1.35; font-weight: 700; margin: 0 0 18px; }
-  .bnt-list { font-size: 16px; line-height: 1.7; margin: 0 0 24px; padding-left: 20px; }
+  .bnt-list { font-size: 16px; line-height: 1.7; margin: 0 0 24px; padding-left: 20px; text-align: left; list-style: disc outside; }
   .bnt-microtext { font-size: 13px; color: var(--muted); margin: 12px 0 0; line-height: 1.5; }
   #bnt-state-intro .bnt-microtext { color: #B9C3D3; }
   .bnt-instruction { font-size: 14px; color: var(--muted); line-height: 1.5; margin: 0 0 16px; }
