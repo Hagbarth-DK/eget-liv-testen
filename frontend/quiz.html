@@ -28,7 +28,7 @@
       </ul>
       <button type="button" class="bnt-btn bnt-btn-primary" id="bnt-start-btn">Tag testen</button>
       <p class="bnt-microtext">Testen er et refleksionsværktøj – ikke en klinisk eller psykologisk vurdering.</p>
-      <p class="bnt-author"><b>Hagbarth Skjold Andersen</b> · 30 år med at få systemer til at holde i virksomheder</p>
+      <p class="bnt-author"><img src="https://bejewelled-dragon-5e69df.netlify.app/assets/hagbarth-160.jpg" alt="" width="40" height="40"><span><b>Hagbarth Skjold Andersen</b> · 30 år med at få systemer til at holde i virksomheder</span></p>
     </section>
 
     <!-- QUESTION STATE -->
@@ -90,7 +90,7 @@
         <p class="bnt-text">Vil du tale om dit resultat, kan du allerede nu booke en uforpligtende optagelsessamtale på 30 minutter. Vi ser på dit mål, dit mønster og på, om testpilotforløbet er det rigtige for dig.</p>
         <a class="bnt-btn bnt-btn-primary bnt-btn-link" href="https://calendly.com/hagbarth-nmvh/30min" target="_blank" rel="noopener">Book en optagelsessamtale</a>
       </div>
-      <p class="bnt-microtext">Hagbarth Skjold Andersen · Life System Architect</p>
+      <p class="bnt-signoff"><img src="https://bejewelled-dragon-5e69df.netlify.app/assets/hagbarth-160.jpg" alt="" width="40" height="40"><span><b>Hagbarth Skjold Andersen</b><br>Life System Architect</span></p>
     </section>
 
   </div>
@@ -110,6 +110,10 @@
   .bnt-root { padding: 24px 0; }
   .bnt-author { font-size: 13px; line-height: 1.5; margin: 16px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.15); color: #B9C3D3; }
   .bnt-author b { color: #FFFFFF; font-weight: 600; }
+  .bnt-author, .bnt-signoff { display: flex; align-items: center; gap: 12px; }
+  .bnt-author img, .bnt-signoff img { width: 40px; height: 40px; border-radius: 50%; flex: none; object-fit: cover; }
+  .bnt-signoff { font-size: 13px; line-height: 1.4; color: var(--muted); margin: 8px 0 0; }
+  .bnt-signoff b { color: var(--ink); font-weight: 600; }
   .bnt-next { background: var(--oak); border-radius: 8px; padding: 18px 18px 20px; margin: 4px 0 16px; }
   .bnt-next .bnt-text { margin-bottom: 16px; }
   .bnt-next-label { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--blue); margin: 0 0 6px; }
